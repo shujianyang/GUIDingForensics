@@ -2,13 +2,17 @@
   * GUID processing.
   */
 
-#include <stdio.h>
-#include <string>
 #include <sstream>
-#include <stdlib.h>
 #include "guid.h"
 
 
+/**
+  * Constructor of GUID
+  *
+  * \param endian The endianess of the array.
+  * \param vs Byte array storing GUID.
+  *
+  */
 GUID::GUID(TSK_ENDIAN_ENUM endian, uint8_t arr[])
 {
     data_1 = read32Bit(endian, arr);
@@ -24,6 +28,7 @@ GUID::GUID(TSK_ENDIAN_ENUM endian, uint8_t arr[])
 /**
   * Constructor of GUID
   *
+  * \param endian The endianess of the array.
   * \param vs Volume system from TSK
   *
   */
@@ -143,7 +148,7 @@ std::string GUID::encode()
   * \param d3 Part 3 of GUID
   * \param d4 Part 4 of GUID
   *
-  * \return If GUID matches the given pattern.
+  * \return True if GUID matches the given pattern.
   */
 bool GUID::match(uint32_t d1, uint16_t d2, uint16_t d3, uint64_t d4)
 {
@@ -168,7 +173,6 @@ bool GUID::match(uint32_t d1, uint16_t d2, uint16_t d3, uint64_t d4)
   * Get partition type based on GUID value.
   *
   * \return String of partition type the GUID represents.
-  *
   */
 std::string GUID::getGuidType()
 {
@@ -198,3 +202,4 @@ std::string GUID::getGuidType()
         
     return type;
 }
+

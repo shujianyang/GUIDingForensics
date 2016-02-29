@@ -5,9 +5,7 @@
 #ifndef GUID_H
 #define GUID_H
 
-#include <stdio.h>
 #include <string>
-#include <stdint.h>
 #include <tsk/libtsk.h>
 #include <tsk/vs/tsk_gpt.h>
 

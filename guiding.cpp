@@ -2,11 +2,9 @@
   * Main function.
   */
 
-#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cstdlib>
 #include <unistd.h>
 #include <tsk/libtsk.h>
 #include "guid.h"
@@ -45,7 +43,27 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    cout << "Is GPT" << endl;
+    cout << "Partition List:" << endl;
+
+    const TSK_VS_PART_INFO * partition;
+    for(TSK_PNUM_T i=0; i < vs->part_count; i++){
+        partition = tsk_vs_part_get(vs, i);
+        if(partition->flags == TSK_VS_PART_FLAG_ALLOC){
+
+            char *byteArr = new char[GUID::BYTES_OF_GUID]; 
+            tsk_vs_part_read(partition, 0, byteArr,
+                    GUID::BYTES_OF_GUID);
+
+            GUID g(vs->endian, (uint8_t*)byteArr);
+
+            cout << (int)partition-> slot_num << " "
+                << g.encode() << "  "
+                << g. getGuidType() << endl;
+
+            delete []byteArr;
+        }
+    }
+
 
     tsk_vs_close(vs);
     tsk_img_close(img);

@@ -1,5 +1,5 @@
 *.dd
-read_guid
+guiding
 
 # Object files
 *.o
