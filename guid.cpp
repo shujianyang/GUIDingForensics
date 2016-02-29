@@ -9,6 +9,19 @@
 
 
 /**
+  * Constructor of GUID
+  *
+  * \param vs Volume system from TSK
+  *
+  */
+GUID::GUID(gpt_entry &entry)
+{
+    ;
+}
+
+
+
+/**
   * Read GUID from a binary file
   * \param g Pointer to GUID struct.
   * \param pf Input file where GUIDs are read.
@@ -54,7 +67,7 @@ int guid_encode(char *buffer, GUID *g)
     if(guid_match(g, 0, 0, 0, 0))
         return 0;
         
-    snprintf(buffer, LENGTH_OF_GUID_STRING + 1, "%08X-%04X-%04X-", 
+    snprintf(buffer, GUID::LENGTH_OF_GUID_STRING + 1, "%08X-%04X-%04X-", 
             g->data_1, g->data_2, g->data_3);
     
     char *append = (char*)malloc(4);
