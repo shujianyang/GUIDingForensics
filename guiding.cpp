@@ -4,6 +4,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstdlib>
 #include <unistd.h>
@@ -48,6 +49,17 @@ int main(int argc, char *argv[])
 
     tsk_vs_close(vs);
     tsk_img_close(img);
+
+    /*ifstream filein(img_name.c_str(), ifstream::binary);
+
+    uint8_t ar[16];
+    for(int i=0; i<16; i++){
+        filein >> ar[i];
+    }
+    filein.close();
+
+    GUID g(TSK_LIT_ENDIAN, ar);
+    cout << g.encode() << endl;*/
     
     return 0;
 }
