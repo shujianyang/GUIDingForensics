@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <string>
 #include <unistd.h>
 #include <tsk/libtsk.h>
@@ -53,17 +54,23 @@ int main(int argc, char *argv[])
         char byteArr[GUID::BYTES_OF_GUID]; 
         tsk_vs_part_read(partition, count * 128, byteArr, GUID::BYTES_OF_GUID);
 
-        GUID g(vs->endian, (uint8_t*)byteArr); 
+        GUID typeGUID(vs->endian, (uint8_t*)byteArr); 
 
-        if(!g.isUnused()){
+        if(!typeGUID.isUnused()){
+            cout << setw(3) << count;
             if(emptyEntries > 0){
                 cout << string(16, '-') << emptyEntries
                     << " Unused Entries" << string(10, '-') << endl;
                 emptyEntries = 0;
             }
-            cout << count << " "
-                << g.encode() << "  "
-                << g. getGuidType() << endl;
+            cout << setw(19) << "[Type GUID]" << " "
+                << typeGUID.encode() << "  "
+                << typeGUID. getGuidType() << endl;
+
+            tsk_vs_part_read(partition, count * 128 + 16, byteArr, GUID::BYTES_OF_GUID);
+            GUID partGUID(vs->endian, (uint8_t*)byteArr);
+            cout << setw(22) << "[Partition GUID]" << " "
+                << partGUID.encode() << "\n" <<  endl;
         }
         else
             emptyEntries++;

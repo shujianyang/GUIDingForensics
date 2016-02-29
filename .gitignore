@@ -36,3 +36,6 @@ guiding
 
 # Auto generated documents
 docs/*
+
+# Input files
+files/*
