@@ -45,24 +45,33 @@ int main(int argc, char *argv[])
 
     cout << "Partition List:" << endl;
 
-    const TSK_VS_PART_INFO * partition;
-    for(TSK_PNUM_T i=0; i < vs->part_count; i++){
-        partition = tsk_vs_part_get(vs, i);
-        if(partition->flags == TSK_VS_PART_FLAG_ALLOC){
+    const TSK_VS_PART_INFO * partition = tsk_vs_part_get(vs, 3);
 
-            char *byteArr = new char[GUID::BYTES_OF_GUID]; 
-            tsk_vs_part_read(partition, 0, byteArr,
-                    GUID::BYTES_OF_GUID);
+    int emptyEntries = 0;
 
-            GUID g(vs->endian, (uint8_t*)byteArr);
+    for(TSK_OFF_T count = 0; count < 128; ++count){
+        char byteArr[GUID::BYTES_OF_GUID]; 
+        tsk_vs_part_read(partition, count * 128, byteArr, GUID::BYTES_OF_GUID);
 
-            cout << (int)partition-> slot_num << " "
+        GUID g(vs->endian, (uint8_t*)byteArr); 
+
+        if(!g.isUnused()){
+            if(emptyEntries > 0){
+                cout << string(16, '-') << emptyEntries
+                    << " Unused Entries" << string(10, '-') << endl;
+                emptyEntries = 0;
+            }
+            cout << count << " "
                 << g.encode() << "  "
                 << g. getGuidType() << endl;
-
-            delete []byteArr;
         }
+        else
+            emptyEntries++;
     }
+    if(emptyEntries > 0)
+        cout << string(16, '-') << emptyEntries
+            << " Unused Entries" << string(10, '-') << endl;
+
 
 
     tsk_vs_close(vs);

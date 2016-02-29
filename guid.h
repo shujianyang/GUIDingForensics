@@ -23,6 +23,7 @@ public:
     GUID(TSK_ENDIAN_ENUM endian, uint8_t arr[]);
     GUID(TSK_ENDIAN_ENUM endian, gpt_entry &entry);
 
+    bool isUnused();
     std::string encode();
     bool match(uint32_t, uint16_t, uint16_t, uint64_t);
     std::string getGuidType();

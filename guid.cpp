@@ -105,6 +105,17 @@ uint32_t GUID::read32Bit(TSK_ENDIAN_ENUM endian, uint8_t *arr)
 
 
 /**
+  * Check if a GUID is empty.
+  *
+  * \return True if the GUID is all 0s.
+  *
+  */
+bool GUID::isUnused()
+{
+    return match(0, 0, 0, 0);
+}
+
+/**
   * Encode GUID as a string
   *
   * \return Encoded GUID string.
