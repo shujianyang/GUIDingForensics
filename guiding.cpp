@@ -37,12 +37,19 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    cout << "Partition type is: " << tsk_vs_type_toname(vs->vstype) << endl;
+    cout << "Partition type is: " << tsk_vs_type_toname(vs->vstype) << '\n' << endl;
 
     if(vs->vstype != TSK_VS_TYPE_GPT){
         cerr << "The partition type of the image is not GPT." << endl;
         exit(1);
     }
+
+
+    char diskArr[GUID::BYTES_OF_GUID];
+    tsk_img_read(img, 0x238, diskArr, GUID::BYTES_OF_GUID);
+    GUID diskGUID(vs->endian, (uint8_t*)diskArr);
+
+    cout << "[Disk GUID] " << diskGUID.encode() << '\n' << endl;
 
     cout << "Partition List:" << endl;
 
@@ -84,16 +91,6 @@ int main(int argc, char *argv[])
     tsk_vs_close(vs);
     tsk_img_close(img);
 
-    /*ifstream filein(img_name.c_str(), ifstream::binary);
-
-    uint8_t ar[16];
-    for(int i=0; i<16; i++){
-        filein >> ar[i];
-    }
-    filein.close();
-
-    GUID g(TSK_LIT_ENDIAN, ar);
-    cout << g.encode() << endl;*/
     
     return 0;
 }
