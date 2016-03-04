@@ -2,7 +2,9 @@
   * GUID processing.
   */
 
+#include <iostream>
 #include <sstream>
+#include <bitset>
 #include "guid.h"
 
 
@@ -212,5 +214,20 @@ std::string GUID::getGuidType()
         type = "[Unkown type]";
         
     return type;
+}
+
+int GUID::getVariant()
+{
+    std::bitset<16> d3(data_3);
+    std::cout << "\n" << d3 << std::endl;
+
+    if(!d3.test(15))
+        return 1;
+    if(d3.test(15) && !d3.test(14))
+        return 2;
+    if(d3.test(15) && d3.test(14) && !d3.test(13))
+        return 3;
+    
+    return 4;
 }
 

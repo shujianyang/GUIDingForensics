@@ -28,6 +28,8 @@ public:
     bool match(uint32_t, uint16_t, uint16_t, uint64_t);
     std::string getGuidType();
 
+    int getVariant();
+
     static const int BYTES_OF_GUID = 16;
     static const int LENGTH_OF_GUID_STRING = 36;
 };

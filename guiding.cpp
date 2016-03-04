@@ -70,14 +70,17 @@ int main(int argc, char *argv[])
                     << " Unused Entries" << string(10, '-') << endl;
                 emptyEntries = 0;
             }
-            cout << setw(19) << "[Type GUID]" << " "
+            cout << setw(20) << "[Type GUID] " 
                 << typeGUID.encode() << "  "
                 << typeGUID. getGuidType() << endl;
 
             tsk_vs_part_read(partition, count * 128 + 16, byteArr, GUID::BYTES_OF_GUID);
             GUID partGUID(vs->endian, (uint8_t*)byteArr);
-            cout << setw(22) << "[Partition GUID]" << " "
-                << partGUID.encode() << "\n" <<  endl;
+            cout << setw(23) << "[Partition GUID] " 
+                << partGUID.encode() <<  endl;
+
+            cout << setw(23) << "[Variant] " << partGUID.getVariant()
+                << "\n" << endl;
         }
         else
             emptyEntries++;
