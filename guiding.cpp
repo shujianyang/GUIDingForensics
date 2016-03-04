@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
                 << partGUID.encode() <<  endl;
 
             cout << setw(23) << "[Variant] " << partGUID.getVariant()
+                << setw(15) << "[Version] " << partGUID.getVersion()
                 << "\n" << endl;
         }
         else

@@ -29,6 +29,7 @@ public:
     std::string getGuidType();
 
     int getVariant();
+    int getVersion();
 
     static const int BYTES_OF_GUID = 16;
     static const int LENGTH_OF_GUID_STRING = 36;
