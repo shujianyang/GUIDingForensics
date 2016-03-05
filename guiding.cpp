@@ -49,7 +49,11 @@ int main(int argc, char *argv[])
     tsk_img_read(img, 0x238, diskArr, GUID::BYTES_OF_GUID);
     GUID diskGUID(vs->endian, (uint8_t*)diskArr);
 
-    cout << "[Disk GUID] " << diskGUID.encode() << '\n' << endl;
+    cout << "[Disk GUID] " << diskGUID.encode() << endl;
+
+    cout << "[Variant] " << diskGUID.variantInfo()
+        << setw(11) << "[Version] " << diskGUID.versionInfo()
+        << "\n" << endl;
 
     cout << "Partition List:" << endl;
 
@@ -72,15 +76,19 @@ int main(int argc, char *argv[])
             }
             cout << setw(20) << "[Type GUID] " 
                 << typeGUID.encode() << "  "
-                << typeGUID. getGuidType() << endl;
+                << typeGUID. guidType() << endl;
+
+            cout << setw(23) << "[Variant] " << typeGUID.variantInfo()
+                << setw(15) << "[Version] " << typeGUID.versionInfo()
+                << endl;
 
             tsk_vs_part_read(partition, count * 128 + 16, byteArr, GUID::BYTES_OF_GUID);
             GUID partGUID(vs->endian, (uint8_t*)byteArr);
             cout << setw(23) << "[Partition GUID] " 
                 << partGUID.encode() <<  endl;
 
-            cout << setw(23) << "[Variant] " << partGUID.getVariant()
-                << setw(15) << "[Version] " << partGUID.getVersion()
+            cout << setw(23) << "[Variant] " << partGUID.variantInfo()
+                << setw(15) << "[Version] " << partGUID.versionInfo()
                 << "\n" << endl;
         }
         else
@@ -88,7 +96,7 @@ int main(int argc, char *argv[])
     }
     if(emptyEntries > 0)
         cout << string(16, '-') << emptyEntries
-            << " Unused Entries" << string(10, '-') << endl;
+            << " Unused GPT Entries" << string(16, '-') << endl;
 
 
 

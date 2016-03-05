@@ -186,7 +186,7 @@ bool GUID::match(uint32_t d1, uint16_t d2, uint16_t d3, uint64_t d4)
   *
   * \return String of partition type the GUID represents.
   */
-std::string GUID::getGuidType()
+std::string GUID::guidType()
 {
     std::string type;
     if(match(0, 0, 0, 0))
@@ -209,30 +209,111 @@ std::string GUID::getGuidType()
         type = "Windows Recovery Environment";
     else if(match(0xEBD0A0A2, 0xB9E5, 0x4433, 0x87C068B6B72699C7))
         type = "Basic data partition";
+    else if(match(0x0FC63DAF, 0x8483, 0x4772, 0x8E793D69D8477DE4))
+        type = "Linux filesystem data";
+    else if(match(0x0657FD6D, 0xA4AB, 0x43C4, 0x84E50933C84B4F4F))
+        type = "Linux swap partition";
+    else if(match(0x933AC7E1, 0x2EB4, 0x4F13, 0xB8440E14E2AEF915))
+        type = "Linux /home partition";
     else
         type = "[Unkown type]";
         
     return type;
 }
 
-int GUID::getVariant()
+
+/**
+  * Get GUID variant.
+  *
+  * \return Variant of the GUID.
+  */
+Variant GUID::getVariant()
 {
     std::bitset<8> d4(data_4[0]);
 
     if(!d4.test(7))
-        return 1;
+        return NETWORK_COMPUTING_SYSTEM;
     if(d4.test(7) && !d4.test(6))
-        return 2;
+        return STANDARD;
     if(d4.test(7) && d4.test(6) && !d4.test(5))
-        return 3;
+        return MS_COM;
     
-    return 4;
+    return RESERVED;
 }
 
+
+/**
+  * Get GUID version.
+  *
+  * \return Version of the GUID.
+  */
 int GUID::getVersion()
 {
     uint16_t ver = data_3 >> 12;
 
     return ver;
+}
+
+
+/**
+  * Get GUID variant string.
+  *
+  * \return String of variant infomation.
+  */
+std::string GUID::variantInfo()
+{
+    std::string variant("");
+    switch(getVariant()){
+        case NETWORK_COMPUTING_SYSTEM: variant = "Network Computing System";
+            break;
+        case STANDARD:
+            variant = "RFC 4122 Standard";
+            break;
+        case MS_COM:
+            variant = "Microsoft COM";
+            break;
+        case RESERVED:
+            variant = "Reserved";
+            break;
+        default:
+            variant = "Unknown";
+    }
+
+    return variant;
+}
+
+
+/**
+  * Get GUID version string.
+  *
+  * \return String of version infomation.
+  */
+std::string GUID::versionInfo()
+{
+    std::string version("");
+    if(getVariant() != STANDARD)
+        return "Invalid";
+
+    switch(getVersion()){
+        case 1:
+            version = "Ver 1: MAC address & date-time";
+            break;
+        case 2:
+            version = "Ver 2: DCE security";
+            break;
+        case 3:
+            version = "Ver 3: MD5 hash & namespace";
+            break;
+        case 4:
+            version = "Ver 4: Random number";
+            break;
+        case 5:
+            version = "Ver 5: SHA-1 hash & namespace";
+            break;
+        default:
+            version = "Unknown";
+    }
+
+    return version;
 }
 
