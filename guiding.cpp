@@ -31,15 +31,9 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    TSK_VS_INFO *vs = tsk_vs_open(img, 0, TSK_VS_TYPE_DETECT);
+    TSK_VS_INFO *vs = tsk_vs_open(img, 0, TSK_VS_TYPE_GPT);
     if( vs == NULL){
         tsk_error_print(stderr);
-        exit(1);
-    }
-
-    cout << "Partition type is: " << tsk_vs_type_toname(vs->vstype) << '\n' << endl;
-
-    if(vs->vstype != TSK_VS_TYPE_GPT){
         cerr << "The partition type of the image is not GPT." << endl;
         exit(1);
     }
