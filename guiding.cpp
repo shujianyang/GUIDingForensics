@@ -8,30 +8,50 @@
 #include <string>
 #include <unistd.h>
 #include <tsk/libtsk.h>
+#include <unistd.h>
 #include "guid.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    //int option = getopt(argc, argv, "o");
+    TSK_OFF_T imgOffset(0);
+    int option;
+    while((option = getopt(argc, argv, "o:")) != -1){
+        switch(option){
+            case 'o':
+                if( (imgOffset = tsk_parse_offset(optarg)) == -1){
+                    tsk_error_print(stderr);
+                    exit(1);
+                }
+                break;
+            case '?':
+            default:
+                cerr << "Unkown arguments." << endl;
+        }
+    }
 
-    if(argc < 2) {
+    if(optind >= argc) {
         cerr << "Please provide the image name" << endl;
         exit(1);
     }
 
-    string img_name(argv[1]);
+    string img_name(argv[optind]);
     
 
-    TSK_IMG_INFO *img = tsk_img_open(1, &argv[1], TSK_IMG_TYPE_DETECT, 0);
+    TSK_IMG_INFO *img = tsk_img_open(1, &argv[optind], TSK_IMG_TYPE_DETECT, 0);
     if(img == NULL){
         tsk_error_print(stderr);
         cerr << "Cannot open image " << img_name << "." << endl;
         exit(1);
     }
+
+    if( imgOffset * img->sector_size >= img->size){
+        cerr << "Offset is too large." << endl;
+        exit(1);
+    }
     
-    TSK_VS_INFO *vs = tsk_vs_open(img, 0, TSK_VS_TYPE_GPT);
+    TSK_VS_INFO *vs = tsk_vs_open(img, imgOffset*img->sector_size, TSK_VS_TYPE_GPT);
     if( vs == NULL){
         tsk_error_print(stderr);
         cerr << "The partition type of the image is not GPT." << endl;
