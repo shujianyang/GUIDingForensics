@@ -1,4 +1,4 @@
-# read_GUID
+# GUIDing Forensics
 Process GUIDs from forensic images.
 
 ###Platform:

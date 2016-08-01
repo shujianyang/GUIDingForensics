@@ -1,4 +1,4 @@
-/** \file guid.c
+/** \file 
   * GUID processing.
   */
 
@@ -11,7 +11,7 @@
   * Constructor of GUID
   *
   * \param endian The endianess of the array.
-  * \param vs Byte array storing GUID.
+  * \param arr Byte array storing GUID.
   *
   */
 GUID::GUID(TSK_ENDIAN_ENUM endian, uint8_t arr[])
@@ -30,7 +30,7 @@ GUID::GUID(TSK_ENDIAN_ENUM endian, uint8_t arr[])
   * Constructor of GUID
   *
   * \param endian The endianess of the array.
-  * \param vs Volume system from TSK
+  * \param entry GPT entry
   *
   */
 GUID::GUID(TSK_ENDIAN_ENUM endian, gpt_entry &entry)
